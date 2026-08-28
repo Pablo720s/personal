@@ -1,0 +1,543 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tamales Lucy | Servicios & Pagos</title>
+<style>
+:root {
+--color-texto: #ffffff;
+--color-subtexto: rgba(255, 255, 255, 0.85);
+--color-borde-glass: rgba(255, 255, 255, 0.2);
+--color-borde-superior: rgba(255, 255, 255, 0.4);
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+html, body {
+width: 100%;
+min-height: 100dvh;
+overflow-x: hidden;
+}
+
+body {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+color: var(--color-texto);
+background-color: #061121;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 24px 16px;
+position: relative;
+}
+
+/* FONDOS CON TRANSICIÓN SUAVE CRUZADA */
+.bg-layer {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+z-index: 1;
+pointer-events: none;
+transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bg-main {
+background-image:
+radial-gradient(circle at center, rgba(6, 17, 33, 0.05) 0%, rgba(6, 17, 33, 0.35) 100%),
+url('https://i.ibb.co/GfsfzLP3/f7edf36a17e208c09b79dc85228b8a68.jpg');
+opacity: 1;
+transform: scale(1);
+}
+
+.bg-transfers {
+background-image:
+radial-gradient(circle at center, rgba(6, 17, 33, 0.05) 0%, rgba(6, 17, 33, 0.35) 100%),
+url('https://i.ibb.co/jvjWvxLw/bb318ca21a7962749b046384d9e17ebd.jpg');
+opacity: 0;
+transform: scale(1.04);
+}
+
+/* CLASE ACTIVA PARA ALTERNAR EL FONDO */
+body.show-transfers .bg-main {
+opacity: 0;
+transform: scale(0.96);
+}
+
+body.show-transfers .bg-transfers {
+opacity: 1;
+transform: scale(1);
+}
+
+/* TARJETA GLASSMORPHISM */
+.card {
+position: relative;
+z-index: 10;
+width: 100%;
+max-width: 330px;
+background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+backdrop-filter: blur(8px) saturate(140%);
+-webkit-backdrop-filter: blur(8px) saturate(140%);
+border: 1px solid var(--color-borde-glass);
+border-top: 1px solid var(--color-borde-superior);
+border-radius: 22px;
+padding: 24px 18px 20px;
+text-align: center;
+box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* CONTENEDOR DE TRANSICIONES ENTRE PESTAÑAS */
+.views-wrapper {
+position: relative;
+width: 100%;
+}
+
+.view-panel {
+width: 100%;
+transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.view-panel.active {
+display: block;
+opacity: 1;
+transform: translateY(0) scale(1);
+}
+
+.view-panel.hidden-left {
+display: none;
+opacity: 0;
+transform: translateY(8px) scale(0.97);
+}
+
+.view-panel.hidden-right {
+display: none;
+opacity: 0;
+transform: translateY(-8px) scale(0.97);
+}
+
+.badge-header {
+display: inline-block;
+background: rgba(255, 255, 255, 0.06);
+border: 1px solid rgba(255, 255, 255, 0.2);
+padding: 6px 16px;
+border-radius: 9999px;
+margin-bottom: 16px;
+font-size: 0.8rem;
+font-weight: 800;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: #ffffff;
+}
+
+h1 {
+font-size: 1.35rem;
+font-weight: 700;
+letter-spacing: -0.01em;
+margin: 0;
+}
+
+p.subtitle {
+color: var(--color-subtexto);
+font-size: 0.8rem;
+margin-top: 4px;
+margin-bottom: 18px;
+}
+
+/* BOTONES DEL MENÚ PRINCIPAL */
+.menu-options {
+display: flex;
+flex-direction: column;
+gap: 12px;
+margin-top: 6px;
+}
+
+.btn-menu-action {
+display: flex;
+align-items: center;
+justify-content: space-between;
+width: 100%;
+background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%);
+border: 1px solid rgba(255, 255, 255, 0.24);
+border-top: 1px solid rgba(255, 255, 255, 0.4);
+padding: 14px 16px;
+border-radius: 14px;
+color: #ffffff;
+text-decoration: none;
+font-size: 0.92rem;
+font-weight: 700;
+cursor: pointer;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+transition: all 0.2s ease;
+box-sizing: border-box;
+}
+
+.btn-menu-action:active {
+transform: scale(0.98);
+background: rgba(255, 255, 255, 0.25);
+}
+
+.btn-menu-action .arrow {
+font-size: 1.1rem;
+opacity: 0.7;
+}
+
+/* BOTÓN VOLVER */
+.btn-back {
+background: transparent;
+border: none;
+color: rgba(255, 255, 255, 0.75);
+font-size: 0.75rem;
+font-weight: 600;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 6px;
+margin-bottom: 12px;
+padding: 4px 0;
+transition: color 0.2s ease;
+}
+
+.btn-back:hover,
+.btn-back:active {
+color: #ffffff;
+}
+
+/* DATOS DE TRANSFERENCIA */
+.data-group {
+text-align: left;
+background: rgba(255, 255, 255, 0.05);
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+border: 1px solid rgba(255, 255, 255, 0.12);
+border-top: 1px solid rgba(255, 255, 255, 0.18);
+padding: 11px 13px;
+border-radius: 12px;
+margin-bottom: 9px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+transition: all 0.3s ease;
+}
+
+.bank-group {
+border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.info-block {
+flex-grow: 1;
+min-width: 0;
+}
+
+.data-group-clabe {
+text-align: left;
+background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+border: 1px solid rgba(255, 255, 255, 0.2);
+border-top: 1px solid rgba(255, 255, 255, 0.32);
+padding: 13px 13px;
+border-radius: 12px;
+margin-bottom: 11px;
+}
+
+.label {
+font-size: 0.68rem;
+color: var(--color-subtexto);
+text-transform: uppercase;
+letter-spacing: 0.06em;
+font-weight: 600;
+}
+
+.value {
+font-size: 0.94rem;
+font-weight: 700;
+margin-top: 3px;
+color: #ffffff;
+word-wrap: break-word;
+}
+
+.btn-mini-copy {
+background: rgba(255, 255, 255, 0.1);
+border: 1px solid rgba(255, 255, 255, 0.25);
+color: #ffffff;
+padding: 6px 11px;
+border-radius: 9999px;
+font-size: 0.72rem;
+font-weight: 600;
+cursor: pointer;
+margin-left: 8px;
+white-space: nowrap;
+transition: all 0.2s ease;
+}
+
+.btn-mini-copy:active {
+transform: scale(0.95);
+background-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-large-copy {
+width: 100%;
+background: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 100%);
+color: #ffffff;
+border: 1px solid rgba(255, 255, 255, 0.3);
+border-top: 1px solid rgba(255, 255, 255, 0.45);
+padding: 11px;
+border-radius: 10px;
+font-size: 0.88rem;
+font-weight: 700;
+letter-spacing: 0.02em;
+cursor: pointer;
+margin-top: 10px;
+transition: all 0.2s ease;
+}
+
+.btn-large-copy:active {
+transform: scale(0.98);
+background: rgba(255, 255, 255, 0.25);
+}
+
+.btn-whatsapp {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+text-decoration: none;
+width: 100%;
+background-color: #ffffff;
+color: #061121;
+border: 1px solid #ffffff;
+padding: 11px;
+font-size: 0.88rem;
+font-weight: 700;
+border-radius: 10px;
+margin-top: 13px;
+transition: all 0.2s ease;
+box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-whatsapp:active {
+transform: scale(0.98);
+background-color: #e2e8f0;
+}
+
+.footer-promo {
+display: inline-block;
+margin-top: 18px;
+padding: 6px 14px;
+background: rgba(255, 255, 255, 0.04);
+border: 1px solid rgba(255, 255, 255, 0.12);
+border-radius: 9999px;
+color: rgba(255, 255, 255, 0.65);
+font-size: 0.68rem;
+font-weight: 500;
+letter-spacing: 0.03em;
+text-decoration: none;
+transition: all 0.2s ease;
+}
+
+.footer-promo:active,
+.footer-promo:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #ffffff;
+border-color: rgba(255, 255, 255, 0.25);
+}
+</style>
+</head>
+<body>
+
+<!-- CAPAS DE IMÁGENES DE FONDO CRUZADAS -->
+<div class="bg-layer bg-main"></div>
+<div class="bg-layer bg-transfers"></div>
+
+<div class="card">
+
+<div class="views-wrapper">
+<!-- VISTA 1: MENÚ PRINCIPAL -->
+<div id="vistaPrincipal" class="view-panel active">
+<div class="badge-header">BIENVENIDO</div>
+<h1>Tamales Lucy</h1>
+<p class="subtitle">Selecciona una opción para continuar</p>
+
+<div class="menu-options">
+<a href="https://search.google.com/local/writereview?placeid=ChIJfbED2ad10oUR2oYodz64xOE" target="_blank" class="btn-menu-action">
+<span>⭐ Dejar una Reseña</span>
+<span class="arrow">→</span>
+</a>
+
+<button type="button" class="btn-menu-action" onclick="mostrarTransferencias()">
+<span>💳 Transferencias</span>
+<span class="arrow">→</span>
+</button>
+</div>
+</div>
+
+<!-- VISTA 2: DATOS DE TRANSFERENCIA -->
+<div id="vistaTransferencias" class="view-panel hidden-right">
+<button type="button" class="btn-back" onclick="mostrarPrincipal()">
+← Volver al inicio
+</button>
+
+<div class="badge-header">TRANSFERENCIAS</div>
+<h1>Tamales Lucy</h1>
+<p class="subtitle">Información oficial para transferencia bancaria</p>
+
+<div class="data-group bank-group" id="bankContainer">
+<div class="info-block">
+<div class="label">Banco</div>
+<div class="value" id="bancoVal">BBVA</div>
+</div>
+</div>
+
+<div class="data-group">
+<div class="info-block">
+<div class="label">Beneficiario / Titular</div>
+<div class="value" id="titularVal">Rogelio Jiménez García</div>
+</div>
+<button class="btn-mini-copy" id="btnTitular" onclick="copiarDato('titularVal', 'btnTitular', false)">Copiar</button>
+</div>
+
+<div class="data-group-clabe">
+<div class="label">CLABE Interbancaria</div>
+<div class="value" id="clabeVal">012180015482930182</div>
+
+<button class="btn-large-copy" id="btnClabe" onclick="copiarDato('clabeVal', 'btnClabe', true)">Copiar CLABE</button>
+</div>
+
+<a href="https://wa.me/527298062753?text=Hola,%20adjunto%20mi%20comprobante%20de%20pago" class="btn-whatsapp" target="_blank">
+Enviar comprobante por WhatsApp
+</a>
+</div>
+</div>
+
+<!-- ENLACE DE PROSPECCIÓN -->
+<a href="https://wa.me/527299631846?text=Hola%2C%20me%20gust%C3%B3%20esta%20p%C3%A1gina%20y%20me%20interesa%20una%20tarjeta%20NFC%20para%20mi%20negocio" class="footer-promo" target="_blank">
+¿Quieres una tarjeta inteligente para tu negocio?
+</a>
+
+</div>
+
+<script>
+function mostrarTransferencias() {
+const vPrincipal = document.getElementById('vistaPrincipal');
+const vTransf = document.getElementById('vistaTransferencias');
+
+// Animación de salida del menú principal
+vPrincipal.style.opacity = '0';
+vPrincipal.style.transform = 'translateY(-10px) scale(0.97)';
+
+// Cambio suave del fondo
+document.body.classList.add('show-transfers');
+
+setTimeout(() => {
+vPrincipal.style.display = 'none';
+vTransf.style.display = 'block';
+vTransf.style.opacity = '0';
+vTransf.style.transform = 'translateY(10px) scale(0.97)';
+
+requestAnimationFrame(() => {
+vTransf.style.opacity = '1';
+vTransf.style.transform = 'translateY(0) scale(1)';
+});
+}, 200);
+}
+
+function mostrarPrincipal() {
+const vPrincipal = document.getElementById('vistaPrincipal');
+const vTransf = document.getElementById('vistaTransferencias');
+
+// Animación de salida de transferencias
+vTransf.style.opacity = '0';
+vTransf.style.transform = 'translateY(10px) scale(0.97)';
+
+// Retorno suave del fondo
+document.body.classList.remove('show-transfers');
+
+setTimeout(() => {
+vTransf.style.display = 'none';
+vPrincipal.style.display = 'block';
+vPrincipal.style.opacity = '0';
+vPrincipal.style.transform = 'translateY(-10px) scale(0.97)';
+
+requestAnimationFrame(() => {
+vPrincipal.style.opacity = '1';
+vPrincipal.style.transform = 'translateY(0) scale(1)';
+});
+}, 200);
+}
+
+function estilizarPestanaBanco() {
+const bancoTexto = document.getElementById('bancoVal').innerText.trim().toLowerCase();
+const contenedor = document.getElementById('bankContainer');
+
+const bancosColores = {
+'nu': '#a855f7',
+'bbva': '#0284c7',
+'banamex': '#0284c7',
+'citibanamex': '#0284c7',
+'santander': '#ef4444',
+'banorte': '#dc2626',
+'mercado pago': '#eab308',
+'mercadopago': '#eab308'
+};
+
+let colorEncontrado = null;
+for (const clave in bancosColores) {
+if (bancoTexto.includes(clave)) {
+colorEncontrado = bancosColores[clave];
+break;
+}
+}
+
+if (colorEncontrado) {
+contenedor.style.borderLeftColor = colorEncontrado;
+} else {
+contenedor.style.borderLeftColor = 'rgba(255, 255, 255, 0.4)';
+}
+}
+
+estilizarPestanaBanco();
+
+function copiarDato(idElemento, idBoton, esClabe) {
+if (navigator.vibrate) {
+navigator.vibrate(50);
+}
+
+let texto = document.getElementById(idElemento).innerText;
+
+if (esClabe) {
+texto = texto.replace(/\s+/g, '');
+} else {
+texto = texto.trim();
+}
+
+navigator.clipboard.writeText(texto).then(() => {
+const btn = document.getElementById(idBoton);
+const originalText = btn.innerText;
+
+btn.innerText = "¡Copiado!";
+btn.style.backgroundColor = "#ffffff";
+btn.style.color = "#061121";
+btn.style.borderColor = "#ffffff";
+
+setTimeout(() => {
+btn.innerText = originalText;
+btn.style.backgroundColor = "";
+btn.style.color = "";
+btn.style.borderColor = "";
+}, 1800);
+});
+}
+</script>
+
+</body>
+</html>
+
