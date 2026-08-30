@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -229,7 +228,7 @@ transition: all 0.3s ease;
 }
 
 .bank-group {
-border-left: 3px solid rgba(255, 255, 255, 0.4);
+border-left: 3px solid #facc15;
 }
 
 .info-block {
@@ -393,21 +392,21 @@ border-color: rgba(255, 255, 255, 0.25);
 <div class="data-group bank-group" id="bankContainer">
 <div class="info-block">
 <div class="label">Banco</div>
-<div class="value" id="bancoVal">BBVA</div>
+<div class="value" id="bancoVal">BanCoppel</div>
 </div>
 </div>
 
 <div class="data-group">
 <div class="info-block">
 <div class="label">Beneficiario / Titular</div>
-<div class="value" id="titularVal">Rogelio Jiménez García</div>
+<div class="value" id="titularVal">Rogelio Pablo Jiménez García</div>
 </div>
 <button class="btn-mini-copy" id="btnTitular" onclick="copiarDato('titularVal', 'btnTitular', false)">Copiar</button>
 </div>
 
 <div class="data-group-clabe">
 <div class="label">CLABE Interbancaria</div>
-<div class="value" id="clabeVal">012180015482930182</div>
+<div class="value" id="clabeVal">137420103924046066</div>
 
 <button class="btn-large-copy" id="btnClabe" onclick="copiarDato('clabeVal', 'btnClabe', true)">Copiar CLABE</button>
 </div>
@@ -430,11 +429,9 @@ function mostrarTransferencias() {
 const vPrincipal = document.getElementById('vistaPrincipal');
 const vTransf = document.getElementById('vistaTransferencias');
 
-// Animación de salida del menú principal
 vPrincipal.style.opacity = '0';
 vPrincipal.style.transform = 'translateY(-10px) scale(0.97)';
 
-// Cambio suave del fondo
 document.body.classList.add('show-transfers');
 
 setTimeout(() => {
@@ -454,11 +451,9 @@ function mostrarPrincipal() {
 const vPrincipal = document.getElementById('vistaPrincipal');
 const vTransf = document.getElementById('vistaTransferencias');
 
-// Animación de salida de transferencias
 vTransf.style.opacity = '0';
 vTransf.style.transform = 'translateY(10px) scale(0.97)';
 
-// Retorno suave del fondo
 document.body.classList.remove('show-transfers');
 
 setTimeout(() => {
@@ -479,6 +474,8 @@ const bancoTexto = document.getElementById('bancoVal').innerText.trim().toLowerC
 const contenedor = document.getElementById('bankContainer');
 
 const bancosColores = {
+'bancoppel': '#facc15',
+'coppel': '#facc15',
 'nu': '#a855f7',
 'bbva': '#0284c7',
 'banamex': '#0284c7',
@@ -500,7 +497,7 @@ break;
 if (colorEncontrado) {
 contenedor.style.borderLeftColor = colorEncontrado;
 } else {
-contenedor.style.borderLeftColor = 'rgba(255, 255, 255, 0.4)';
+contenedor.style.borderLeftColor = '#facc15';
 }
 }
 
@@ -540,4 +537,3 @@ btn.style.borderColor = "";
 
 </body>
 </html>
-
