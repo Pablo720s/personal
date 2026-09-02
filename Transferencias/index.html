@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pagos & Transferencias | Transferencia</title>
+<title>Pagos & Transferencias | Plantilla</title>
 <style>
 :root {
 --color-texto: #ffffff;
@@ -45,7 +45,7 @@ width: 100%;
 height: 100%;
 background-image:
 radial-gradient(circle at center, rgba(6, 17, 33, 0.05) 0%, rgba(6, 17, 33, 0.35) 100%),
-url('https://i.ibb.co/jvW6HzXs/bb9f3a5e73dd54f82764485e27d17ee2.jpg');
+url('https://i.ibb.co/GfsfzLP3/f7edf36a17e208c09b79dc85228b8a68.jpg');
 background-size: cover;
 background-position: center;
 background-repeat: no-repeat;
@@ -247,32 +247,41 @@ border-color: rgba(255, 255, 255, 0.25);
 
 <div class="badge-header">TRANSFERENCIAS</div>
 
-<h1>Transferencia</h1>
+<h1>Nombre de la Plantilla</h1>
 <p class="subtitle">Información oficial para transferencia bancaria</p>
 
 <div class="data-group bank-group" id="bankContainer">
 <div class="info-block">
 <div class="label">Banco</div>
-<div class="value" id="bancoVal">Mercado Pago</div>
+<div class="value" id="bancoVal">Nombre del Banco</div>
 </div>
 </div>
 
 <div class="data-group">
 <div class="info-block">
 <div class="label">Beneficiario / Titular</div>
-<div class="value" id="titularVal">Angel Pablo Jiménez Alcantara</div>
+<div class="value" id="titularVal">Nombre del Titular</div>
 </div>
 <button class="btn-mini-copy" id="btnTitular" onclick="copiarDato('titularVal', 'btnTitular', false)">Copiar</button>
 </div>
 
+<!-- NUEVA SECCIÓN PARA DIMO -->
+<div class="data-group">
+<div class="info-block">
+<div class="label">DiMo (Celular)</div>
+<div class="value" id="dimoVal">0000000000</div>
+</div>
+<button class="btn-mini-copy" id="btnDimo" onclick="copiarDato('dimoVal', 'btnDimo', false)">Copiar</button>
+</div>
+
 <div class="data-group-clabe">
 <div class="label">CLABE Interbancaria</div>
-<div class="value" id="clabeVal">722969069127861618</div>
+<div class="value" id="clabeVal">000000000000000000</div>
 
 <button class="btn-large-copy" id="btnClabe" onclick="copiarDato('clabeVal', 'btnClabe', true)">Copiar CLABE</button>
 </div>
 
-<a href="https://wa.me/527299631846?text=Hola,%20adjunto%20mi%20comprobante%20de%20pago" class="btn-whatsapp" target="_blank">
+<a href="https://wa.me/0000000000?text=Hola,%20adjunto%20mi%20comprobante%20de%20pago" class="btn-whatsapp" target="_blank">
 Enviar comprobante por WhatsApp
 </a>
 
